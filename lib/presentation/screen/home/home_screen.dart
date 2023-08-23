@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttermovie/data/local/db/dao/favorite_dao.dart';
+import 'package:fluttermovie/data/local/db/entities/movie_entity.dart';
 import 'package:fluttermovie/presentation/screen/home/favorite_section.dart';
 import 'package:fluttermovie/presentation/screen/home/home_section.dart';
 import 'package:fluttermovie/presentation/screen/home/map_section.dart';
@@ -68,8 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: NavigationButton(
                 iconAssetPath: 'assets/icons/ic_favorite.svg',
                 isActive: false,
-                onPressed: () {
+                onPressed: () async {
+                  FavoriteDao dao = FavoriteDao();
+                  dao.insert(MovieEntity(id: 'asdf', title: 'Film 1'));
 
+                  var result = await dao.getAll();
+                  print(result.length);
                 },
               ),
             ),

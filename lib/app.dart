@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:fluttermovie/data/local/db/flutter_movie_database.dart';
 
 class App {
   static App? _instance;
   final String? apiBaseURL;
-
+  late FlutterMovieDatabase dbConnection;
   late Dio dio;
 
   App.configure({
@@ -27,5 +28,7 @@ class App {
       receiveTimeout: const Duration(milliseconds: 50000),
       responseType: ResponseType.json
     ));
+
+    dbConnection = FlutterMovieDatabase.instance;
   }
 }
