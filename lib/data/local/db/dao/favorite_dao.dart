@@ -1,11 +1,22 @@
-import 'package:fluttermovie/app.dart';
-import 'package:fluttermovie/data/local/db/entities/movie_entity.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:fluttermovie/base/dao_base.dart';
+import 'package:fluttermovie/base/entity_base.dart';
 
-class FavoriteDao {
-  final _tableName = 'favorite';
+class FavoriteDao extends Dao {
 
-  Future<int> insert(MovieEntity entity) async {
+  @override
+  String get tableName => 'favorite';
+
+  @override
+  Entity toEntity(Map<String, dynamic> map) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Entity toListEntity(Map<String, dynamic> map) {
+    throw UnimplementedError();
+  }
+
+  /*Future<int> insert(MovieEntity entity) async {
     final Database db = await App().dbConnection.database;
     return await db.insert(_tableName, entity.toMap());
   }
@@ -20,5 +31,5 @@ class FavoriteDao {
     }
 
     return result;
-  }
+  }*/
 }

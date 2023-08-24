@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         title: 'Movie Flutter',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.tealAccent.shade200),
+          fontFamily: 'SF Pro Text',
           useMaterial3: true,
         ),
         home: const HomeScreen(),
