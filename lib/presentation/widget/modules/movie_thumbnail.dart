@@ -13,7 +13,7 @@ class MovieThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         if (onPressed != null) {
           onPressed!();

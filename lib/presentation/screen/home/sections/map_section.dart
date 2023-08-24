@@ -50,30 +50,75 @@ class _MapSectionState extends State<MapSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          center: LatLng(-6.1595214, 106.8247346),
-          zoom: 5,
-        ),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-          ),
-          _currentPosition != null ? MarkerLayer(
-            markers: [
-              Marker(
-                point: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-                width: 40,
-                height: 40,
-                builder: (context) => FlutterLogo(),
-              ),
-            ],
-          ) : const MarkerLayer(),
-        ],
+    return FlutterMap(
+      mapController: _mapController,
+      options: MapOptions(
+        center: const LatLng(-6.1595214, 106.8247346),
+        zoom: 5,
       ),
+      nonRotatedChildren: [
+        _plang(),
+      ],
+      children: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+        ),
+        _currentPosition != null ? MarkerLayer(
+          markers: [
+            Marker(
+              point: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+              width: 40,
+              height: 40,
+              builder: (context) => Image.asset(
+                'assets/images/image_person.png'
+              ),
+            ),
+          ],
+        ) : const MarkerLayer(),
+      ],
     );
+  }
+
+  Widget _plang() {
+    return _currentPosition != null ? SafeArea(
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(18),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8))
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Your current location',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black
+              ),
+            ),
+            Text(
+              'Latitude: ${_currentPosition!.latitude}',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black
+              ),
+            ),
+            Text(
+              'Longitude: ${_currentPosition!.longitude}',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black
+              ),
+            )
+          ],
+        ),
+      ),
+    ) : const SizedBox();
   }
 }

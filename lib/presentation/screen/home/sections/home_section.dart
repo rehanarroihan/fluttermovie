@@ -14,8 +14,10 @@ class HomeSection extends StatefulWidget {
 }
 
 class _HomeSectionState extends State<HomeSection> {
-
   late MovieCubit _movieCubit;
+
+  final CarouselController _controller = CarouselController();
+  int _carouselCurrentSection = 0;
 
   @override
   void initState() {
@@ -67,20 +69,7 @@ class _HomeSectionState extends State<HomeSection> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CarouselSlider(
-                        options: CarouselOptions(height: 260),
-                        items: _movieCubit.movieList.map((i) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return Expanded(
-                                child: MovieThumbnail(
-                                  imageUrl: i.imageUrl,
-                                )
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
+                      _carouselSlider(),
 
                       const SizedBox(height: 28),
 
@@ -99,7 +88,7 @@ class _HomeSectionState extends State<HomeSection> {
                       const SizedBox(height: 16),
 
                       SizedBox(
-                        height: 200,
+                        height: 160,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
@@ -107,7 +96,7 @@ class _HomeSectionState extends State<HomeSection> {
                           padding: const EdgeInsets.only(left: 20),
                           itemBuilder: (context, index) {
                             return Container(
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              width: MediaQuery.of(context).size.width * 0.28,
                               margin: const EdgeInsets.only(right: 8),
                               child: MovieThumbnail(
                                 imageUrl: _movieCubit.movieList[index].imageUrl,
@@ -134,7 +123,7 @@ class _HomeSectionState extends State<HomeSection> {
                       const SizedBox(height: 16),
 
                       SizedBox(
-                        height: 200,
+                        height: 160,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
@@ -142,7 +131,7 @@ class _HomeSectionState extends State<HomeSection> {
                           padding: const EdgeInsets.only(left: 20),
                           itemBuilder: (context, index) {
                             return Container(
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              width: MediaQuery.of(context).size.width * 0.28,
                               margin: const EdgeInsets.only(right: 8),
                               child: MovieThumbnail(
                                 imageUrl: _movieCubit.movieList[index].imageUrl,
@@ -151,6 +140,8 @@ class _HomeSectionState extends State<HomeSection> {
                           },
                         )
                       ),
+
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
@@ -159,6 +150,56 @@ class _HomeSectionState extends State<HomeSection> {
           ),
         );
       },
+    );
+  }
+
+  Widget _carouselSlider() {
+    return Stack(
+      children: [
+        CarouselSlider(
+          carouselController: _controller,
+          options: CarouselOptions(
+            height: 280,
+            viewportFraction: 1.0,
+            enlargeCenterPage: false,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _carouselCurrentSection = index;
+              });
+            },
+          ),
+          items: _movieCubit.movieList.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return MovieThumbnail(
+                  imageUrl: i.imageUrl,
+                );
+              },
+            );
+          }).toList(),
+        ),
+        Positioned(
+          bottom: 12,
+          left: 8,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _movieCubit.movieList.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => _controller.animateToPage(entry.key),
+                child: Container(
+                  width: _carouselCurrentSection == entry.key ? 18 : 12,
+                  height: 8,
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    color: Colors.amber.withOpacity(_carouselCurrentSection == entry.key ? 0.9 : 0.4)
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
     );
   }
 }
