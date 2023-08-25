@@ -19,6 +19,7 @@ class MovieCubit extends Cubit<MovieState> {
   bool getMovieListLoading = false;
 
   List<Movie> popularMovieList = [];
+  List<Movie> backupPopularMovieList = []; // for local search function
   bool getPopularMovieListLoading = false;
 
   MovieDetail? movieDetail;
@@ -53,13 +54,23 @@ class MovieCubit extends Cubit<MovieState> {
     emit(GetMovieListSuccessful());
   }
 
-  void getPopularMovieList({String? searchQuery}) async {
+  void getPopularMovieList({ String? searchQuery }) async {
     getPopularMovieListLoading = true;
     emit(GetPopularMovieListInit());
 
-    popularMovieList.clear();
-    List<Movie> result = await _repository.getMovieList(searchQuery: searchQuery);
-    popularMovieList.addAll(result.reversed);
+    if (searchQuery != null && searchQuery.isNotEmpty) {
+      List<Movie> searchResult = backupPopularMovieList.where((movie) {
+        return movie.title.toLowerCase().contains(searchQuery.toLowerCase());
+      }).toList();
+      popularMovieList.clear();
+      popularMovieList.addAll(searchResult);
+    } else {
+      popularMovieList.clear();
+      backupPopularMovieList.clear();
+      List<Movie> result = await _repository.getMovieList();
+      popularMovieList.addAll(result.reversed);
+      backupPopularMovieList.addAll(result.reversed);
+    }
 
     getPopularMovieListLoading = false;
     emit(GetPopularMovieListSuccessful());
@@ -94,12 +105,14 @@ class MovieCubit extends Cubit<MovieState> {
     }
   }
 
-  void getFavoriteList() async {
+  void getFavoriteList({ String? searchQuery }) async {
     favoriteList.clear();
     getMovieListLoading = true;
     emit(GetFavoritesInit());
 
-    var result = await _repository.getFavorites();
+    List<Movie> result = searchQuery == null || searchQuery.isEmpty
+      ? await _repository.getFavorites()
+      : await _repository.searchFavorite(searchQuery);
     favoriteList.addAll(result);
 
     getMovieListLoading = false;

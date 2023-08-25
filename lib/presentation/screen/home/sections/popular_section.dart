@@ -15,6 +15,7 @@ class PopularSection extends StatefulWidget {
 
 class _PopularSectionState extends State<PopularSection> {
   late MovieCubit _movieCubit;
+  String? searchQuery;
 
   @override
   void initState() {
@@ -35,21 +36,69 @@ class _PopularSectionState extends State<PopularSection> {
         return Scaffold(
           backgroundColor: AppColors.background,
           body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // SearchBar
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 8
                 ),
                 color: AppColors.appBar,
-                child: const SafeArea(
+                child: SafeArea(
                   child: AppSearchBar(
                     hint: 'Search',
+                    onQueryChanged: (String searchQuery) {
+                      setState(() {
+                        this.searchQuery = searchQuery;
+                      });
+
+                      _movieCubit.getPopularMovieList(searchQuery: searchQuery);
+                    },
                   ),
                 ),
               ),
 
-              Expanded(
+              // 'Showing result of blabla..' text
+              searchQuery != null && searchQuery != '' ? Container(
+                margin: const EdgeInsets.only(top: 16, left: 20),
+                child: RichText(
+                  maxLines: 1,
+                  textScaleFactor: 1,
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    text: 'Showing result of ',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "'$searchQuery'",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+              ) : const SizedBox(),
+
+              // The Grid
+              _movieCubit.popularMovieList.isEmpty ? Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 100),
+                  child: const Text(
+                    'Tidak ada dafter populer',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              ) : Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
                   shrinkWrap: true,
@@ -74,6 +123,7 @@ class _PopularSectionState extends State<PopularSection> {
                   }).toList(),
                 ),
               ),
+
             ],
           ),
         );

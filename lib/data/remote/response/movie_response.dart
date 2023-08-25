@@ -86,7 +86,7 @@ class MovieResponse {
    return Movie(
      id: id ?? 0,
      title: title ?? "",
-     imageUrl: "https://image.tmdb.org/t/p/original${posterPath ?? ""}",
+     imageUrl: "https://image.tmdb.org/t/p/w780${posterPath ?? ""}",
      genres: "",
      casts: "",
      year: year,

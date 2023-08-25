@@ -13,8 +13,8 @@ class MovieRepository {
   final MovieService _movieService = MovieService();
   final FavoriteDao _favoriteDao = FavoriteDao();
 
-  Future<List<Movie>> getMovieList({ String? searchQuery }) async {
-    ApiReturn<List<MovieResponse>> result = await _movieService.getMovieList(searchQuery: searchQuery);
+  Future<List<Movie>> getMovieList() async {
+    ApiReturn<List<MovieResponse>> result = await _movieService.getMovieList();
     if (result.success) {
       List<Movie> res = [];
       result.data?.forEach((MovieResponse e) {
@@ -61,6 +61,11 @@ class MovieRepository {
 
   Future<List<Movie>> getFavorites() async {
     List result = await _favoriteDao.query();
+    return result.cast<FavoriteEntity>().map((FavoriteEntity e) => e.toDomain()).toList();
+  }
+
+  Future<List<Movie>> searchFavorite(String searchQuery) async {
+    List result = await _favoriteDao.rawQuery("SELECT * FROM favorite WHERE title LIKE '%$searchQuery%'");
     return result.cast<FavoriteEntity>().map((FavoriteEntity e) => e.toDomain()).toList();
   }
 

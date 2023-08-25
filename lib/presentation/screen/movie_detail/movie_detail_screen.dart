@@ -81,7 +81,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   ),
 
                   Container(
-                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.45),
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.4),
                     child: Column(
                       children: [
                         // Main Contents
@@ -92,6 +92,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             children: [
                               Text(
                                 _movieCubit.movieDetail!.title,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontSize: 28,
                                   color: Colors.white,
@@ -161,7 +163,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   Expanded(
                                     child: AppButton(
                                       style: AppButtonStyle.secondary,
-                                      text: _movieCubit.movieDetail!.isFavorite ? 'Remove Fav' : 'Add to Favorite',
+                                      text: _movieCubit.movieDetail!.isFavorite ? 'Remove Favorite' : 'Add to Favorite',
                                       iconSvgUri: 'assets/icons/ic_plus_primary.svg',
                                       onPressed: () {
                                         _movieCubit.toggleFavorite(Movie(
@@ -232,7 +234,15 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                         width: 80,
                                         child: Center(child: CircularProgressIndicator())
                                       ),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      errorWidget: (context, url, error) => Container(
+                                        height: 80,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white.withOpacity(0.3)
+                                        ),
+                                        child: const Center(child: Icon(Icons.error))
+                                      ),
                                     ),
 
                                     const SizedBox(height: 16),
@@ -268,12 +278,12 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       children: [
         CachedNetworkImage(
           imageUrl: _movieCubit.movieDetail!.imageUrl,
-          height: MediaQuery.of(context).size.height * 0.62,
+          height: MediaQuery.of(context).size.height * 0.65,
           fit: BoxFit.cover,
           width: double.infinity,
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.63,
+          height: MediaQuery.of(context).size.height * 0.66,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomCenter,

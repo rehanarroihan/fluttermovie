@@ -16,6 +16,7 @@ class FavoriteSection extends StatefulWidget {
 
 class _FavoriteSectionState extends State<FavoriteSection> {
   late MovieCubit _movieCubit;
+  String? searchQuery;
 
   @override
   void initState() {
@@ -41,9 +42,16 @@ class _FavoriteSectionState extends State<FavoriteSection> {
                   vertical: 8
                 ),
                 color: AppColors.appBar,
-                child: const SafeArea(
+                child: SafeArea(
                   child: AppSearchBar(
                     hint: 'Search',
+                    onQueryChanged: (String searchQuery) {
+                      setState(() {
+                        this.searchQuery = searchQuery;
+                      });
+
+                      _movieCubit.getFavoriteList(searchQuery: searchQuery);
+                    },
                   ),
                 ),
               ),
@@ -71,7 +79,7 @@ class _FavoriteSectionState extends State<FavoriteSection> {
     if (_movieCubit.favoriteList.isEmpty) {
       return const Center(
         child: Text(
-          'Belum ada daftar favorite',
+          'Tidak ada daftar favorite',
           style: TextStyle(
             fontSize: 16,
             color: Colors.white
@@ -80,35 +88,68 @@ class _FavoriteSectionState extends State<FavoriteSection> {
       );
     }
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _movieCubit.favoriteList.length,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      itemBuilder: (context, index) {
-        return FavoriteThumbnail(
-          imageUrl: _movieCubit.favoriteList[index].imageUrl,
-          title: _movieCubit.favoriteList[index].title,
-          year: _movieCubit.favoriteList[index].year,
-          genres: _movieCubit.favoriteList[index].genres,
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => MovieDetailScreen(
-                id: _movieCubit.favoriteList[index].id,
-              )
-            ));
-          },
-          onToggle: () {
-            _movieCubit.toggleFavorite(Movie(
-              id: _movieCubit.favoriteList[index].id,
-              title: _movieCubit.favoriteList[index].title,
-              imageUrl: _movieCubit.favoriteList[index].imageUrl,
-              genres: "",
-              year: "",
-              isFavorite: _movieCubit.favoriteList[index].isFavorite
-            ));
-          },
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        searchQuery != null && searchQuery != '' ? Container(
+          margin: const EdgeInsets.only(top: 16, left: 20),
+          child: RichText(
+            maxLines: 1,
+            textScaleFactor: 1,
+            textAlign: TextAlign.start,
+            text: TextSpan(
+              text: 'Showing result of ',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontSize: 16
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "'$searchQuery'",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  )
+                ),
+              ],
+            ),
+          ),
+        ) : const SizedBox(),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: _movieCubit.favoriteList.length,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            itemBuilder: (context, index) {
+              return FavoriteThumbnail(
+                imageUrl: _movieCubit.favoriteList[index].imageUrl,
+                title: _movieCubit.favoriteList[index].title,
+                year: _movieCubit.favoriteList[index].year,
+                genres: _movieCubit.favoriteList[index].genres,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => MovieDetailScreen(
+                      id: _movieCubit.favoriteList[index].id,
+                    )
+                  ));
+                },
+                onToggle: () {
+                  // Only for delete needs, it's okay if not fulfilling all data
+                  _movieCubit.toggleFavorite(Movie(
+                    id: _movieCubit.favoriteList[index].id,
+                    title: _movieCubit.favoriteList[index].title,
+                    imageUrl: _movieCubit.favoriteList[index].imageUrl,
+                    genres: "",
+                    year: "",
+                    isFavorite: _movieCubit.favoriteList[index].isFavorite
+                  ));
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

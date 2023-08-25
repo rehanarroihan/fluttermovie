@@ -21,6 +21,18 @@ class MovieThumbnail extends StatelessWidget {
         width: double.infinity,
         imageUrl: imageUrl,
         fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          color: Colors.white.withOpacity(0.3),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+        errorWidget: (context, url, error) => Container(
+          color: Colors.white.withOpacity(0.4),
+          child: const Center(
+            child: Icon(Icons.error),
+          ),
+        ),
       ),
     );
   }

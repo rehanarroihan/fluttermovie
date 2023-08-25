@@ -10,7 +10,7 @@ class MovieService {
 
   final String _apiKey = 'd4bee1442fda04e0b421566f1a54e4ae';
 
-  Future<ApiReturn<List<MovieResponse>>> getMovieList({ String? searchQuery }) async {
+  Future<ApiReturn<List<MovieResponse>>> getMovieList() async {
     try {
       Response response = await dio.get(
         'discover/movie',

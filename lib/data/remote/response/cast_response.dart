@@ -63,6 +63,6 @@ class CastResponse {
   Cast toDomain() => Cast(
     id: id.toString(),
     name: name ?? "",
-    photoUrl: "https://image.tmdb.org/t/p/original${profilePath ?? ""}"
+    photoUrl: "https://image.tmdb.org/t/p/w300${profilePath ?? ""}"
   );
 }
