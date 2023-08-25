@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttermovie/bloc/movie_cubit.dart';
+import 'package:fluttermovie/presentation/screen/movie_detail/movie_detail_screen.dart';
 import 'package:fluttermovie/presentation/widget/modules/movie_thumbnail.dart';
 import 'package:fluttermovie/res/colors.dart';
 
@@ -100,6 +101,13 @@ class _HomeSectionState extends State<HomeSection> {
                               margin: const EdgeInsets.only(right: 8),
                               child: MovieThumbnail(
                                 imageUrl: _movieCubit.movieList[index].imageUrl,
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => MovieDetailScreen(
+                                      id: _movieCubit.movieList[index].id,
+                                    )
+                                  ));
+                                },
                               ),
                             );
                           },
@@ -135,6 +143,13 @@ class _HomeSectionState extends State<HomeSection> {
                               margin: const EdgeInsets.only(right: 8),
                               child: MovieThumbnail(
                                 imageUrl: _movieCubit.movieList[index].imageUrl,
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => MovieDetailScreen(
+                                      id: _movieCubit.movieList[index].id,
+                                    )
+                                  ));
+                                },
                               ),
                             );
                           },
@@ -173,6 +188,13 @@ class _HomeSectionState extends State<HomeSection> {
               builder: (BuildContext context) {
                 return MovieThumbnail(
                   imageUrl: i.imageUrl,
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => MovieDetailScreen(
+                        id: i.id,
+                      )
+                    ));
+                  },
                 );
               },
             );

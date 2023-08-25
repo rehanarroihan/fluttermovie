@@ -7,6 +7,7 @@ class FavoriteThumbnail extends StatelessWidget {
   final String year;
   final String genres;
   final Function? onPressed;
+  final Function? onToggle;
 
   const FavoriteThumbnail({
     Key? key,
@@ -14,7 +15,8 @@ class FavoriteThumbnail extends StatelessWidget {
     required this.title,
     required this.year,
     required this.genres,
-    this.onPressed
+    this.onPressed,
+    this.onToggle,
   }) : super(key: key);
 
   @override
@@ -94,7 +96,9 @@ class FavoriteThumbnail extends StatelessWidget {
 
           IconButton(
             onPressed: () {
-
+              if (onToggle != null) {
+                onToggle!();
+              }
             },
             style: TextButton.styleFrom(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttermovie/bloc/movie_cubit.dart';
+import 'package:fluttermovie/domain/model/movie.dart';
 import 'package:fluttermovie/presentation/screen/movie_detail/movie_detail_screen.dart';
 import 'package:fluttermovie/presentation/widget/base/app_search_bar.dart';
 import 'package:fluttermovie/presentation/widget/modules/favorite_thumbnail.dart';
@@ -94,6 +95,16 @@ class _FavoriteSectionState extends State<FavoriteSection> {
               builder: (context) => MovieDetailScreen(
                 id: _movieCubit.favoriteList[index].id,
               )
+            ));
+          },
+          onToggle: () {
+            _movieCubit.toggleFavorite(Movie(
+              id: _movieCubit.favoriteList[index].id,
+              title: _movieCubit.favoriteList[index].title,
+              imageUrl: _movieCubit.favoriteList[index].imageUrl,
+              genres: "",
+              year: "",
+              isFavorite: _movieCubit.favoriteList[index].isFavorite
             ));
           },
         );

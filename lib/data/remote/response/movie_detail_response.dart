@@ -100,15 +100,48 @@ class MovieDetailResponse {
     return data;
   }
 
-  MovieDetail toDomain() => MovieDetail(
-    id: id ?? 0,
-    title: title ?? "",
-    imageUrl: "https://image.tmdb.org/t/p/original${backdropPath ?? ""}",
-    genres: genres?.map((e) => e.name ?? "").toList() ?? [],
-    casts: "",
-    overview: overview ?? "",
-    isFavorite: false
-  );
+  MovieDetail toDomain() {
+    String year = '0';
+    try {
+      if (releaseDate != null) {
+        year = releaseDate!.split('-').first;
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return MovieDetail(
+      id: id ?? 0,
+      title: title ?? "",
+      imageUrl: "https://image.tmdb.org/t/p/original${posterPath ?? ""}",
+      duration: _durationHelper(runtime ?? 0),
+      genres: genres!.map((e) => e.name).join(","),
+      year: year,
+      casts: [],
+      overview: overview ?? "",
+      isFavorite: false
+    );
+  }
+
+  String _durationHelper(int runtime) {
+    int hours = runtime ~/ 60;
+    int minutes = runtime % 60;
+
+    String result = '';
+
+    if (hours > 0) {
+      result += '${hours}h';
+    }
+
+    if (minutes > 0) {
+      if (result.isNotEmpty) {
+        result += ' ';
+      }
+      result += '${minutes}m';
+    }
+
+    return result;
+  }
 }
 
 class Genres {

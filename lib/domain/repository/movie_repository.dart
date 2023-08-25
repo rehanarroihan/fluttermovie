@@ -2,8 +2,10 @@ import 'package:fluttermovie/data/local/db/dao/favorite_dao.dart';
 import 'package:fluttermovie/data/local/db/entities/favorite_entity.dart';
 import 'package:fluttermovie/data/remote/network/movie_service.dart';
 import 'package:fluttermovie/data/remote/response/api_return.dart';
+import 'package:fluttermovie/data/remote/response/cast_response.dart';
 import 'package:fluttermovie/data/remote/response/movie_detail_response.dart';
 import 'package:fluttermovie/data/remote/response/movie_response.dart';
+import 'package:fluttermovie/domain/model/cast.dart';
 import 'package:fluttermovie/domain/model/movie.dart';
 import 'package:fluttermovie/domain/model/movie_detail.dart';
 
@@ -28,7 +30,16 @@ class MovieRepository {
   Future<MovieDetail?> getMovieDetail(int id) async {
     ApiReturn<MovieDetailResponse> result = await _movieService.getMovieDetail(id);
     if (result.success) {
-      return (result.data as MovieDetailResponse).toDomain();
+      var res = (result.data as MovieDetailResponse).toDomain();
+
+      ApiReturn<List<CastResponse>> castResult = await _movieService.getCast(id);
+      List<Cast> casTemp = [];
+      castResult.data?.forEach((CastResponse e) {
+        casTemp.add(e.toDomain());
+      });
+
+      res.casts = casTemp;
+      return res;
     } else {
       return null;
     }

@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 
 class MovieThumbnail extends StatelessWidget {
   final String imageUrl;
-  final Function? onPressed;
+  final Function onPressed;
 
   const MovieThumbnail({
     Key? key,
     required this.imageUrl,
-    this.onPressed
+    required this.onPressed
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (onPressed != null) {
-          onPressed!();
-        }
+        onPressed();
       },
       child: CachedNetworkImage(
         width: double.infinity,
