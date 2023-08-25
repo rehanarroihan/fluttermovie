@@ -1,5 +1,6 @@
 import 'package:fluttermovie/base/dao_base.dart';
 import 'package:fluttermovie/base/entity_base.dart';
+import 'package:fluttermovie/data/local/db/entities/favorite_entity.dart';
 
 class FavoriteDao extends Dao {
 
@@ -7,9 +8,13 @@ class FavoriteDao extends Dao {
   String get tableName => 'favorite';
 
   @override
-  Entity toEntity(Map<String, dynamic> map) {
-    throw UnimplementedError();
-  }
+  Entity toEntity(Map<String, dynamic> map) => FavoriteEntity(
+    id: map['movie_id'],
+    imageUrl: map['image_url'],
+    title: map['title'],
+    year: map['year'],
+    genres: map['genres'],
+  );
 
   @override
   Entity toListEntity(Map<String, dynamic> map) {

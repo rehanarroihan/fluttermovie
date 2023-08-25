@@ -38,7 +38,7 @@ class _SearchSectionState extends State<SearchSection> {
                   vertical: 8
                 ),
                 color: AppColors.appBar,
-                child: SafeArea(
+                child: const SafeArea(
                   child: AppSearchBar(
                     hint: 'Search',
                   ),
@@ -58,13 +58,11 @@ class _SearchSectionState extends State<SearchSection> {
                     return PopularMovieThumbnail(
                       imageUrl: _movieCubit.movieList[index].imageUrl,
                       title: _movieCubit.movieList[index].title,
-                      casts: _movieCubit.movieList[index].casts,
+                      casts: _movieCubit.movieList[index].casts ?? "",
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => MovieDetailScreen(
                             id: _movieCubit.movieList[index].id,
-                            imageUrl: _movieCubit.movieList[index].imageUrl,
-                            title: _movieCubit.movieList[index].title
                           )
                         ));
                       },

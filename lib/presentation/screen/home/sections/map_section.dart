@@ -62,7 +62,7 @@ class _MapSectionState extends State<MapSection> {
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+          userAgentPackageName: 'com.multazamgsd.fluttermovie',
         ),
         _currentPosition != null ? MarkerLayer(
           markers: [

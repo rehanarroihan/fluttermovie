@@ -24,3 +24,19 @@ class GetMovieDetailInit extends MovieState {}
 class GetMovieDetailSuccessful extends MovieState {}
 
 class GetMovieDetailFailed extends MovieState {}
+
+class GetFavoritesInit extends MovieState {}
+
+class GetFavoritesSuccessful extends MovieState {}
+
+class GetFavoritesFailed extends MovieState {}
+
+class ToggleFavoritesInit extends MovieState {}
+
+class ToggleFavoritesSuccessful extends MovieState {
+  final Movie? movie;
+
+  const ToggleFavoritesSuccessful(this.movie);
+}
+
+class ToggleFavoritesFailed extends MovieState {}

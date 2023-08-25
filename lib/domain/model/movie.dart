@@ -3,7 +3,7 @@ class Movie {
   String title;
   String imageUrl;
   String genres;
-  String casts;
+  String? casts;
   String year;
   bool isFavorite;
 
@@ -12,7 +12,7 @@ class Movie {
     required this.title,
     required this.imageUrl,
     required this.genres,
-    required this.casts,
+    this.casts,
     required this.year,
     required this.isFavorite
   });

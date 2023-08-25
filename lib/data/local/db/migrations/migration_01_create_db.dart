@@ -6,8 +6,11 @@ class Migration01CreateDb extends MigrationBase {
   Future<void> up(Database db) async {
     await db.execute("CREATE TABLE favorite("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "movie_id TEXT,"
-        "title TEXT"
+        "movie_id INTEGER,"
+        "image_url TEXT,"
+        "title TEXT,"
+        "genres TEXT,"
+        "year TEXT"
       ")"
     );
   }
