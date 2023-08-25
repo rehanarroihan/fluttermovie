@@ -135,18 +135,18 @@ class _HomeSectionState extends State<HomeSection> {
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          itemCount: _movieCubit.movieList.length,
+                          itemCount: _movieCubit.comingSoonList.length,
                           padding: const EdgeInsets.only(left: 20),
                           itemBuilder: (context, index) {
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.28,
                               margin: const EdgeInsets.only(right: 8),
                               child: MovieThumbnail(
-                                imageUrl: _movieCubit.movieList[index].imageUrl,
+                                imageUrl: _movieCubit.comingSoonList[index].imageUrl,
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => MovieDetailScreen(
-                                      id: _movieCubit.movieList[index].id,
+                                      id: _movieCubit.comingSoonList[index].id,
                                     )
                                   ));
                                 },
@@ -183,7 +183,7 @@ class _HomeSectionState extends State<HomeSection> {
               });
             },
           ),
-          items: _movieCubit.movieList.map((i) {
+          items: _movieCubit.highlighMovieList.map((i) {
             return Builder(
               builder: (BuildContext context) {
                 return MovieThumbnail(
@@ -201,15 +201,15 @@ class _HomeSectionState extends State<HomeSection> {
           }).toList(),
         ),
         Positioned(
-          bottom: 12,
-          left: 8,
+          bottom: 16,
+          left: 20,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _movieCubit.movieList.asMap().entries.map((entry) {
+            children: _movieCubit.highlighMovieList.asMap().entries.map((entry) {
               return GestureDetector(
                 onTap: () => _controller.animateToPage(entry.key),
                 child: Container(
-                  width: _carouselCurrentSection == entry.key ? 18 : 12,
+                  width: _carouselCurrentSection == entry.key ? 38 : 18,
                   height: 8,
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   decoration: BoxDecoration(

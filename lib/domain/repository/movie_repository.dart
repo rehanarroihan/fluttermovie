@@ -13,8 +13,22 @@ class MovieRepository {
   final MovieService _movieService = MovieService();
   final FavoriteDao _favoriteDao = FavoriteDao();
 
-  Future<List<Movie>> getMovieList() async {
-    ApiReturn<List<MovieResponse>> result = await _movieService.getMovieList();
+  Future<List<Movie>> getMovieList({ String? searchQuery }) async {
+    ApiReturn<List<MovieResponse>> result = await _movieService.getMovieList(searchQuery: searchQuery);
+    if (result.success) {
+      List<Movie> res = [];
+      result.data?.forEach((MovieResponse e) {
+        res.add(e.toDomain());
+      });
+
+      return res;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<Movie>> getComingSoonMovieList() async {
+    ApiReturn<List<MovieResponse>> result = await _movieService.getComingSoonMovieList();
     if (result.success) {
       List<Movie> res = [];
       result.data?.forEach((MovieResponse e) {

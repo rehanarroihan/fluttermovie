@@ -40,3 +40,9 @@ class ToggleFavoritesSuccessful extends MovieState {
 }
 
 class ToggleFavoritesFailed extends MovieState {}
+
+class GetPopularMovieListInit extends MovieState {}
+
+class GetPopularMovieListSuccessful extends MovieState {}
+
+class GetPopularMovieListFailed extends MovieState {}

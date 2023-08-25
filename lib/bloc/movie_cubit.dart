@@ -13,8 +13,13 @@ class MovieCubit extends Cubit<MovieState> {
 
   int activePage = 0;
 
+  List<Movie> highlighMovieList = [];
   List<Movie> movieList = [];
+  List<Movie> comingSoonList = [];
   bool getMovieListLoading = false;
+
+  List<Movie> popularMovieList = [];
+  bool getPopularMovieListLoading = false;
 
   MovieDetail? movieDetail;
   bool getMovieDetailLoading = false;
@@ -34,12 +39,30 @@ class MovieCubit extends Cubit<MovieState> {
     getMovieListLoading = true;
     emit(GetMovieListInit());
 
+    highlighMovieList.clear();
     movieList.clear();
-    var result = await _repository.getMovieList();
-    movieList.addAll(result);
+    List<Movie> result = await _repository.getMovieList();
+    highlighMovieList = result.sublist(0, 3);
+    movieList = result.sublist(3, 13);
+
+    comingSoonList.clear();
+    List<Movie> resultComingSoonMovie  = await _repository.getComingSoonMovieList();
+    comingSoonList = resultComingSoonMovie.sublist(0, 10);
 
     getMovieListLoading = false;
     emit(GetMovieListSuccessful());
+  }
+
+  void getPopularMovieList({String? searchQuery}) async {
+    getPopularMovieListLoading = true;
+    emit(GetPopularMovieListInit());
+
+    popularMovieList.clear();
+    List<Movie> result = await _repository.getMovieList(searchQuery: searchQuery);
+    popularMovieList.addAll(result.reversed);
+
+    getPopularMovieListLoading = false;
+    emit(GetPopularMovieListSuccessful());
   }
 
   void getMovieDetail(int id) async {

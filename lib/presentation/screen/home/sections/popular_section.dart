@@ -6,19 +6,23 @@ import 'package:fluttermovie/presentation/widget/base/app_search_bar.dart';
 import 'package:fluttermovie/presentation/widget/modules/popular_movie_thumbnail.dart';
 import 'package:fluttermovie/res/colors.dart';
 
-class SearchSection extends StatefulWidget {
-  const SearchSection({Key? key}) : super(key: key);
+class PopularSection extends StatefulWidget {
+  const PopularSection({Key? key}) : super(key: key);
 
   @override
-  _SearchSectionState createState() => _SearchSectionState();
+  _PopularSectionState createState() => _PopularSectionState();
 }
 
-class _SearchSectionState extends State<SearchSection> {
+class _PopularSectionState extends State<PopularSection> {
   late MovieCubit _movieCubit;
 
   @override
   void initState() {
     _movieCubit = BlocProvider.of<MovieCubit>(context);
+
+    if (_movieCubit.popularMovieList.isEmpty) {
+      _movieCubit.getPopularMovieList();
+    }
 
     super.initState();
   }
@@ -53,16 +57,16 @@ class _SearchSectionState extends State<SearchSection> {
                   crossAxisSpacing: 2,
                   mainAxisSpacing: 2,
                   padding: const EdgeInsets.all(8),
-                  children: _movieCubit.movieList.map<Widget>((prop) {
-                    int index = _movieCubit.movieList.indexWhere((p) => p.id == prop.id);
+                  children: _movieCubit.popularMovieList.map<Widget>((prop) {
+                    int index = _movieCubit.popularMovieList.indexWhere((p) => p.id == prop.id);
                     return PopularMovieThumbnail(
-                      imageUrl: _movieCubit.movieList[index].imageUrl,
-                      title: _movieCubit.movieList[index].title,
-                      casts: _movieCubit.movieList[index].casts ?? "",
+                      imageUrl: _movieCubit.popularMovieList[index].imageUrl,
+                      title: _movieCubit.popularMovieList[index].title,
+                      casts: _movieCubit.popularMovieList[index].genres ?? "",
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => MovieDetailScreen(
-                            id: _movieCubit.movieList[index].id,
+                            id: _movieCubit.popularMovieList[index].id,
                           )
                         ));
                       },

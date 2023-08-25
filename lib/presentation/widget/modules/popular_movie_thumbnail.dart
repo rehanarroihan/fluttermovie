@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PopularMovieThumbnail extends StatelessWidget {
   final String imageUrl;
@@ -34,12 +35,25 @@ class PopularMovieThumbnail extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-            ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                left: 8,
+                child: SvgPicture.asset(
+                  'assets/icons/ic_hd_primary.svg',
+                  height: 16,
+                  width: 23,
+                ),
+              )
+            ],
           ),
 
           const SizedBox(height: 8),
@@ -57,7 +71,7 @@ class PopularMovieThumbnail extends StatelessWidget {
           ),
 
           Text(
-            "Dylan O'Brien, Kaya Scodelario, Will Poulter ",
+            casts,
             style: TextStyle(
               color: Colors.white.withOpacity(0.6),
               fontSize: 10,

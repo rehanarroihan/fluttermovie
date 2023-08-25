@@ -10,10 +10,53 @@ class MovieService {
 
   final String _apiKey = 'd4bee1442fda04e0b421566f1a54e4ae';
 
-  Future<ApiReturn<List<MovieResponse>>> getMovieList() async {
+  Future<ApiReturn<List<MovieResponse>>> getMovieList({ String? searchQuery }) async {
     try {
       Response response = await dio.get(
-        'discover/movie?api_key=$_apiKey&language=enUS&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&year=2024&with_genres=true'
+        'discover/movie',
+        queryParameters: {
+          'api_key': _apiKey,
+          'language': 'enUS',
+          'sort_by': 'popularity.desc',
+          'include_adult': false,
+          'include_video': false,
+          'page': 1,
+          'with_genres': true,
+        }
+      );
+
+      if (response.statusCode == 200) {
+        return ApiReturn(
+          success: true,
+          data: response.data['results'] != null ? List.generate(response.data['results'].length, (index) {
+            return MovieResponse.fromJson(response.data['results'][index]);
+          }) : null,
+        );
+      }
+
+      return ApiReturn(success: false, message: 'API Error Ocurred');
+    } catch(e) {
+      return ApiReturn(
+        success: false,
+        message: 'Something went wrong'
+      );
+    }
+  }
+
+  Future<ApiReturn<List<MovieResponse>>> getComingSoonMovieList() async {
+    try {
+      Response response = await dio.get(
+          'discover/movie',
+          queryParameters: {
+            'api_key': _apiKey,
+            'language': 'enUS',
+            'sort_by': 'popularity.asc',
+            'include_adult': false,
+            'include_video': false,
+            'page': 1,
+            'year': DateTime(DateTime.now().year + 1).year,
+            'with_genres': true,
+          }
       );
 
       if (response.statusCode == 200) {
@@ -37,7 +80,10 @@ class MovieService {
   Future<ApiReturn<MovieDetailResponse>> getMovieDetail(int id) async {
     try {
       Response response = await dio.get(
-        'movie/$id?api_key=$_apiKey'
+        'movie/$id',
+        queryParameters: {
+          'api_key': _apiKey,
+        }
       );
 
       if (response.statusCode == 200) {
@@ -59,7 +105,10 @@ class MovieService {
   Future<ApiReturn<List<CastResponse>>> getCast(int movieId) async {
     try {
       Response response = await dio.get(
-        'movie/$movieId/credits?api_key=$_apiKey'
+        'movie/$movieId/credits',
+        queryParameters: {
+          'api_key': _apiKey,
+        }
       );
 
       if (response.statusCode == 200) {

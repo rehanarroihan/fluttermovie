@@ -4,7 +4,7 @@ import 'package:fluttermovie/bloc/movie_cubit.dart';
 import 'package:fluttermovie/presentation/screen/home/sections/favorite_section.dart';
 import 'package:fluttermovie/presentation/screen/home/sections/home_section.dart';
 import 'package:fluttermovie/presentation/screen/home/sections/map_section.dart';
-import 'package:fluttermovie/presentation/screen/home/sections/search_section.dart';
+import 'package:fluttermovie/presentation/screen/home/sections/popular_section.dart';
 import 'package:fluttermovie/presentation/widget/base/navigation_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: const NeverScrollableScrollPhysics(),
             children: const [
               HomeSection(),
-              SearchSection(),
+              PopularSection(),
               FavoriteSection(),
               MapSection()
             ],
